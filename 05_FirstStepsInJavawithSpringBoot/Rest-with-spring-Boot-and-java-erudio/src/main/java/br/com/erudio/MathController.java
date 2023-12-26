@@ -6,34 +6,80 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.erudio.Services.MathOperators;
+import br.com.erudio.Services.ValidateNumber;
+
 @RestController
 public class MathController {
+
+    MathOperators math = new MathOperators();
+    ValidateNumber validateNumber = new ValidateNumber();
 
     @GetMapping("/sum/{numberOne}/{numberTwo}")
 	public Double sum(
         @PathVariable(value ="numberOne") String numberOne,
         @PathVariable(value ="numberTwo") String numberTwo) throws Exception
         {
-            if(!isNumeric(numberOne) || !isNumeric(numberTwo)){
+            if(!validateNumber.isNumeric(numberOne) || !validateNumber.isNumeric(numberTwo)){
                 throw new UnsupportedOperationException("Please set a numeric value");
             }
-            return convertToDouble(numberOne) + convertToDouble(numberTwo);
+            return math.mathSum(validateNumber.convert(numberOne), validateNumber.convert(numberTwo));
         }
 
-    private Double convertToDouble(String strNumber) {
-        if(strNumber == null) return 0D;
-
-        String number = strNumber.replaceAll(",",".");
-        
-        if(isNumeric(number))return Double.parseDouble(number);
-        return 0D;
-    }
-
-    private boolean isNumeric(String strNumber) {
-        if(strNumber == null) return false;
-        String number = strNumber.replaceAll(",","." );
-        return number.matches("[-+]?[0-9]*\\.?[0-9]+");
-    }
+    @GetMapping("/sub/{numberOne}/{numberTwo}")
+    public Double subtract(
+        @PathVariable(value = "numberOne") String numberOne,
+        @PathVariable(value = "numberTwo") String numberTwo) throws Exception
+        {
+            if(!validateNumber.isNumeric(numberOne) || !validateNumber.isNumeric(numberTwo)){
+                throw new UnsupportedOperationException("Please set a numeric value");
+            }
+            return validateNumber.convert(numberOne) - validateNumber.convert(numberTwo);
+        }
     
+    @GetMapping("/mult/{numberOne}/{numberTwo}")
+    public Double mult(
+        @PathVariable(value = "numberOne") String numberOne,
+        @PathVariable(value = "numberTwo") String numberTwo) throws Exception
+        {
+            if(!validateNumber.isNumeric(numberOne) || !validateNumber.isNumeric(numberTwo)){
+                throw new UnsupportedOperationException("Please set a numeric value");
+            }
+            return validateNumber.convert(numberOne) * validateNumber.convert(numberTwo);
+        }    
+    
+    @GetMapping("/div/{numberOne}/{numberTwo}")
+    public Double division(
+        @PathVariable(value = "numberOne") String numberOne,
+        @PathVariable(value = "numberTwo") String numberTwo) throws Exception
+        {
+            if(!validateNumber.isNumeric(numberOne) || !validateNumber.isNumeric(numberTwo)){
+                throw new UnsupportedOperationException("Please set a numeric value");
+            }
+            return validateNumber.convert(numberOne) / validateNumber.convert(numberTwo);
+        }
+    
+    @GetMapping("average/{numberOne}/{numberTwo}")
+    public Double average(
+        @PathVariable(value = "numberOne") String numberOne,
+        @PathVariable(value = "numberTwo") String numberTwo) throws Exception
+        {
+            if(!validateNumber.isNumeric(numberOne) || !validateNumber.isNumeric(numberTwo)){
+                throw new UnsupportedOperationException("Please set a numeric value");
+            }
+            return (validateNumber.convert(numberOne) + validateNumber.convert(numberTwo)) / 2;
+        }
+    
+    @GetMapping("square/{numberOne}")
+    public Double square(
+        @PathVariable(value = "numberOne") String numberOne) throws Exception
+        {
+            if(!validateNumber.isNumeric(numberOne)){
+                throw new UnsupportedOperationException("Please set a numeric value");
+            }
+            return Math.sqrt(validateNumber.convert(numberOne));
+        }
+    
+
 
 }
