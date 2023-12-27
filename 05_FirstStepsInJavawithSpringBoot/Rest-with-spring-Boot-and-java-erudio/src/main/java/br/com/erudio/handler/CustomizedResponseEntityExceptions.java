@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.erudio.Exceptions.ExceptionsResponse;
+import br.com.erudio.Exceptions.ResourceNotFoundException;
 
 @RestController
 @ControllerAdvice
@@ -25,13 +26,13 @@ public class CustomizedResponseEntityExceptions extends ResponseEntityExceptionH
         return new ResponseEntity<>(exceptionsResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(UnsupportedOperationException.class)
-    public final ResponseEntity<ExceptionsResponse> handleBadRequestExceptions(Exception ex, WebRequest request){
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public final ResponseEntity<ExceptionsResponse> handleNotFoundExceptions(Exception ex, WebRequest request){
         ExceptionsResponse exceptionsResponse = new ExceptionsResponse(
             new Date(),
             ex.getMessage(),
             request.getDescription(false));
-        return new ResponseEntity<>(exceptionsResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exceptionsResponse, HttpStatus.NOT_FOUND);
     }
 
     
