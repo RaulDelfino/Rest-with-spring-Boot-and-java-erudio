@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.erudio.Exceptions.ResourceNotFoundException;
+import br.com.erudio.data.vo.v1.PersonVO;
+import br.com.erudio.mapper.Mapper;
 import br.com.erudio.model.Person;
 import br.com.erudio.repository.PersonRepository;
 
@@ -18,30 +20,34 @@ public class PersonServices {
 
     private Logger logger = Logger.getLogger(PersonServices.class.getName());
 
-    public List<Person> findAll(){
+    public List<PersonVO> findAll(){
         logger.info("Finding All person");
-        return repository.findAll();
+
+        return Mapper.parseListObjects(repository.findAll(), PersonVO.class);
     }
 
-    public Person create(Person person) {
-        logger.info("Creating one Person");
-        return repository.save(person);
+    public PersonVO create(PersonVO personVO) {
+        logger.info("Creating one PersonVO");
+        var entity = Mapper.parseObject(personVO, Person.class );
+        var vo = Mapper.parseObject(repository.save(entity), PersonVO.class);
+        
+        return vo;
     }
 
     
-    public Person update(Person newPerson) {
+    public PersonVO update(PersonVO newPersonVO) {
         logger.info("Updating one Person");
 
-        Person person = repository.findById(newPerson.getId())
+        var entity = repository.findById(newPersonVO.getId())
             .orElseThrow(()-> new ResourceNotFoundException("No record found for this ID"));
 
-        person.setFirstName(newPerson.getFirstName());
-        person.setLastName(newPerson.getLastName());
-        person.setAddress(newPerson.getAddress());
-        person.setGender(newPerson.getGender());
+        entity.setFirstName(newPersonVO.getFirstName());
+        entity.setLastName(newPersonVO.getLastName());
+        entity.setAddress(newPersonVO.getAddress());
+        entity.setGender(newPersonVO.getGender());
 
-
-        return repository.save(person);
+        var vo = Mapper.parseObject(repository.save(entity), PersonVO.class);
+        return vo;
     }
 
     public void delete(Long id) {
@@ -54,12 +60,14 @@ public class PersonServices {
     }
 
 
-    public Person findById(Long id){
+    public PersonVO findById(Long id){
         logger.info("Finding one person"); //Infromações no logger da aplicação
 
 
-        return repository.findById(id)
+        var entity = repository.findById(id)
             .orElseThrow(()-> new ResourceNotFoundException("No record found for this ID"));
+        
+        return Mapper.parseObject(entity, PersonVO.class);    
     }
 
 }
