@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.erudio.Exceptions.ResourceNotFoundException;
 import br.com.erudio.data.vo.v1.PersonVO;
+import br.com.erudio.data.vo.v2.PersonVOv2;
 import br.com.erudio.mapper.Mapper;
+import br.com.erudio.mapper.custom.PersonMapper;
 import br.com.erudio.model.Person;
 import br.com.erudio.repository.PersonRepository;
 
@@ -17,6 +19,9 @@ public class PersonServices {
 
     @Autowired
     PersonRepository repository;
+
+    @Autowired
+    PersonMapper mapper;
 
     private Logger logger = Logger.getLogger(PersonServices.class.getName());
 
@@ -30,6 +35,15 @@ public class PersonServices {
         logger.info("Creating one PersonVO");
         var entity = Mapper.parseObject(personVO, Person.class );
         var vo = Mapper.parseObject(repository.save(entity), PersonVO.class);
+        
+        return vo;
+    }
+
+    
+    public PersonVOv2 createV2(PersonVOv2 personVO) {
+        logger.info("Creating one Person with V2!");
+        var entity = mapper.convertVoToEntity(personVO);
+        var vo = mapper.convertEntityToVo(repository.save(entity));
         
         return vo;
     }
