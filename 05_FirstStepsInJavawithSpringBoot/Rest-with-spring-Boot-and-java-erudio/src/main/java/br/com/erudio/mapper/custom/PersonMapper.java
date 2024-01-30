@@ -13,7 +13,7 @@ public class PersonMapper {
     public PersonVOv2 convertEntityToVo(Person person){
         PersonVOv2 vo = new PersonVOv2();
 
-        vo.setId(person.getId());
+        vo.setKey(person.getId());
         vo.setAddress(person.getAddress());
         vo.setFirstName(person.getFirstName());
         vo.setLastName(person.getLastName());
@@ -27,7 +27,7 @@ public class PersonMapper {
     public Person convertVoToEntity (PersonVOv2 person){
         Person entity = new Person();
 
-        entity.setId(person.getId());
+        entity.setId(person.getKey());
         entity.setAddress(person.getAddress());
         entity.setFirstName(person.getFirstName());
         entity.setLastName(person.getLastName());

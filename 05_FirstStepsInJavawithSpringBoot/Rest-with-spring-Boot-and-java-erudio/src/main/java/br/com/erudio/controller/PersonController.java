@@ -61,7 +61,7 @@ public class PersonController {
             MediaType.APPLICATION_XML,
             MediaType.APPLICATION_YML
             })
-    public PersonVO create(@RequestBody PersonVO person) {
+    public PersonVO create(@RequestBody PersonVO person) throws Exception {
         return service.create(person);
     }
     @PostMapping(value = "/v2", 
@@ -75,7 +75,7 @@ public class PersonController {
             MediaType.APPLICATION_XML,
             MediaType.APPLICATION_YML
             })
-    public PersonVOv2 createV2(@RequestBody PersonVOv2 person) {
+    public PersonVOv2 createV2(@RequestBody PersonVOv2 person) throws Exception {
         return service.createV2(person);
     }
     
@@ -91,7 +91,7 @@ public class PersonController {
             MediaType.APPLICATION_XML,
             MediaType.APPLICATION_YML
             })
-    public PersonVO update(@RequestBody PersonVO person) {
+    public PersonVO update(@RequestBody PersonVO person) throws Exception {
         return service.update(person);
     }
 
