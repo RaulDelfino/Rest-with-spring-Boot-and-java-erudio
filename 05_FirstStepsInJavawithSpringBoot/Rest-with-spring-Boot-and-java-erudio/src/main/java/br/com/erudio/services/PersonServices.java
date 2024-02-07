@@ -89,7 +89,7 @@ public class PersonServices {
     }
 
 
-    public PersonVO findById(long id) throws Exception{
+    public PersonVO findById(long id) throws Exception {
         logger.info("Finding one person"); //Infromações no logger da aplicação
 
 
