@@ -52,15 +52,6 @@ public class PersonServices {
         return vo;
     }
 
-    
-    public PersonVOv2 createV2(PersonVOv2 personVO) throws Exception {
-        
-        logger.info("Creating one Person with V2!");
-        var entity = mapper.convertVoToEntity(personVO);
-        var vo = mapper.convertEntityToVo(repository.save(entity));
-        vo.add(linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
-        return vo;
-    }
 
     
     public PersonVO update(PersonVO newPersonVO) throws Exception {
